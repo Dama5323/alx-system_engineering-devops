@@ -1,0 +1,60 @@
+#!/bin/bash
+
+# Define custom digit sets
+base_water="water"
+base_stir="stir"
+base_bestchol="bestchol"
+
+# Convert from a custom base to decimal
+to_decimal() {
+    local num=$1
+    local base_chars=$2
+    local base=${#base_chars}
+    local result=0
+    local i j digit val
+
+    for ((i = 0; i < ${#num}; i++)); do
+        digit="${num:$i:1}"
+        val=-1
+        for ((j = 0; j < base; j++)); do
+            if [[ "${base_chars:$j:1}" == "$digit" ]]; then
+                val=$j
+                break
+            fi
+        done
+        if [[ $val -eq -1 ]]; then
+            echo "Invalid digit '$digit' for base '$base_chars'" >&2
+            exit 1
+        fi
+        result=$((result * base + val))
+    done
+    echo "$result"
+}
+
+# Convert from decimal to a custom base
+from_decimal() {
+    local num=$1
+    local base_chars=$2
+    local base=${#base_chars}
+    local result=""
+    local digit
+
+    while [ "$num" -gt 0 ]; do
+        digit=$((num % base))
+        result="${base_chars:$digit:1}$result"
+        num=$((num / base))
+    done
+
+    [ -z "$result" ] && result="${base_chars:0:1}"
+    echo "$result"
+}
+
+# Get decimal values
+dec_water=$(to_decimal "$WATER" "$base_water")
+dec_stir=$(to_decimal "$STIR" "$base_stir")
+
+# Add
+sum=$((dec_water + dec_stir))
+
+# Convert to base_bestchol
+from_decimal "$sum" "$base_bestchol"
