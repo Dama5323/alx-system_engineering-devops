@@ -1,2 +1,2 @@
 #!/bin/bash
-IFS=: read -ra d <<< "$PATH"; c=0; for i in "${d[@]}"; do [[ -n "$i" ]] && ((c++)); done; echo "$c"
+echo $PATH | tr ':' '\n' | wc -l 
