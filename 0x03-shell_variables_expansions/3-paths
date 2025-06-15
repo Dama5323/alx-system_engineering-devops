@@ -1,2 +1,2 @@
 #!/bin/bash
-awk -F: '{print NF}' <<< "$PATH"
+awk -F: 'BEGIN {count=0} {for(i=1;i<=NF;i++) if($i!="") count++} END {print count}' <<< "$PATH"
