@@ -1,2 +1,6 @@
 #!/bin/bash
+<<<<<<< HEAD
 IFS=: read -ra d <<< "$PATH"; c=0; for i in "${d[@]}"; do [[ -n "$i" ]] && ((c++)); done; echo "$c"
+=======
+echo $PATH | tr ':' '\n' | wc -l 
+>>>>>>> 77ff70e6a91e90dfe0e87a99d108442122a07cb1
