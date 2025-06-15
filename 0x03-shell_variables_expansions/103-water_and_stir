@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "$(( $(echo "$WATER" | tr 'water' 01234) + $(echo "$STIR" | tr 'stir' 01234) ))" | awk '{n=$1} END {s="bestchol"; while(n){r=n%9; x=substr(s,r+1,1)x; n=int(n/9)} print x}'
+tr 'water' '01234' <<<"$WATER" | read w && tr 'stir' '0123' <<<"$STIR" | read s && printf "%s\n" "$(tr '012345678' 'bestchol' <<<$((w + s)))" | head -1
