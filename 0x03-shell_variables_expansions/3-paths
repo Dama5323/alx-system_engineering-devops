@@ -1,2 +1,6 @@
 #!/bin/bash
+<<<<<<< HEAD
 IFS=:; set -f; arr=($PATH); echo ${#arr[@]}
+=======
+echo $PATH | tr ':' '\n' | wc -l 
+>>>>>>> 44b6be16a8a8bd7d8e9b7fe0cafdd87f94236490
