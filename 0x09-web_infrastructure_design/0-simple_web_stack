@@ -1,0 +1,65 @@
+Diagram: https://imgur.com/a/Z1AVrlp
+
+## Simple Web Infrastructure (1 Server Web Stack)
+
+### 🌐 Scenario:
+A user opens their browser and types `www.foobar.com`.
+
+---
+
+### 🖥 What is a Server?
+A **server** is a physical or virtual machine that provides services or resources to other machines (clients). In this case, it hosts the website and runs various components like Nginx, an application server, and MySQL.
+
+---
+
+### 🌍 Role of the Domain Name
+The **domain name** (`foobar.com`) provides a human-readable address for users to access the website instead of remembering an IP address. It's mapped to an IP by DNS.
+
+---
+
+### 📛 DNS Record Type of `www`
+The `www` part in `www.foobar.com` is a **subdomain** and typically uses an **A record** (Address record) in DNS, which maps `www.foobar.com` to the IP address `8.8.8.8`.
+
+---
+
+### 🌐 Web Server Role
+The **web server (Nginx)** receives HTTP requests from the user’s browser and serves static files or forwards dynamic requests to the application server.
+
+---
+
+### ⚙️ Application Server Role
+The **application server** (e.g., PHP-FPM or Node.js) processes dynamic content, executes application logic, and generates responses to return to the web server.
+
+---
+
+### 💾 Application Files
+The **application files** are the actual codebase (e.g., HTML, PHP, JS) stored on the server that defines the behavior and structure of the website.
+
+---
+
+### 🗄 Database Role
+The **database server (MySQL)** stores structured data like user accounts, product info, or blog posts, which the application server accesses to render dynamic content.
+
+---
+
+### 🔗 Server Communication with User
+The server communicates with the user’s computer using the **HTTP or HTTPS protocol** over **TCP/IP**, returning web pages as responses to HTTP requests.
+
+---
+
+### 🚨 Infrastructure Issues
+
+1. **SPOF (Single Point of Failure)**  
+   If the single server fails, the whole website becomes unavailable.
+
+2. **Downtime During Maintenance**  
+   Updating code or restarting Nginx may cause temporary service unavailability.
+
+3. **Scalability Issues**  
+   A single server cannot handle large traffic surges — there's no load balancing or redundancy.
+
+---
+
+### 📡 Server IP and Domain:
+- IP: `8.8.8.8`
+- Domain: `www.foobar.com` (A record pointing to the server)
