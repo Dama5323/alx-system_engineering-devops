@@ -1,1 +1,45 @@
+# 3-scale_up
 
+## 🧠 Application Server vs Web Server
+
+| Component            | Web Server (e.g., Nginx)                                       | Application Server (e.g., Gunicorn, uWSGI, Node.js)                     |
+|---------------------|----------------------------------------------------------------|-------------------------------------------------------------------------|
+| **Primary Role**    | Handles HTTP requests and serves static files (HTML, CSS, JS)  | Processes dynamic content (business logic, data queries, APIs)         |
+| **Typical Use**     | Reverse proxy, caching, SSL termination                        | Executes backend application code                                       |
+| **Examples**        | Nginx, Apache HTTPD                                             | Gunicorn (Python), uWSGI, Node.js, Django, Express                     |
+| **Port**            | Usually ports 80/443                                            | Internal ports (e.g., 8000, 5000)                                       |
+| **Interaction**     | Receives client requests and forwards them to app servers      | Connects to the database, performs logic, returns response to web server |
+
+---
+
+## 🔧 Infrastructure Overview – Scale Up Design
+
+This diagram reflects a **scaled-up web infrastructure**, optimized for **performance**, **availability**, and **fault tolerance**.
+
+### 🧱 Components Added
+
+| Component           | Purpose                                                                 |
+|---------------------|-------------------------------------------------------------------------|
+| **1 New Server**    | Hosts the new Load Balancer (HAProxy) for high availability             |
+| **Load Balancer Cluster** | Ensures failover and load distribution through HAProxy redundancy |
+| **Dedicated Web Server** | Handles static content and proxies to application servers           |
+| **Dedicated Application Server** | Executes dynamic backend code (e.g., Python/Django)        |
+| **Dedicated Database Server** | Manages persistent storage with MySQL                         |
+
+---
+
+## 🔍 Why Each Element Was Added
+
+- **Clustered Load Balancer (HAProxy)**: Prevents single point of failure by allowing traffic to route through another instance in case one fails.
+- **Separate Servers for Each Role**:
+  - **Web Server**: Ensures faster delivery of static files and handles load before passing requests.
+  - **App Server**: Processes logic-heavy tasks and maintains security by being separate.
+  - **Database**: Isolated for better performance, backup management, and security.
+- **Improved Fault Isolation**: Each component can fail or scale independently.
+- **Easier Maintenance & Scalability**: You can upgrade or replicate one component without affecting others.
+
+---
+
+## 📊 Architecture Diagram 
+
+https://github.com/Dama5323/alx-system_engineering-devops/blob/main/0x09-web_infrastructure_design/3-scale_up.drawio
