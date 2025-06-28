@@ -1,0 +1,83 @@
+# 1-distributed_web_infrastructure
+
+## Overview
+
+This distributed infrastructure hosts the website www.foobar.com. A user accesses the site via a domain name, and traffic is routed through a load balancer to web and application servers. The backend is supported by a MySQL Primary-Replica (Master-Slave) database cluster.
+
+## Components
+
+- 1 Load Balancer (HAProxy)
+- 1 Web Server (Nginx)
+- 1 Application Server
+- 1 Set of Application Files (Code Base)
+- 1 MySQL Primary Database
+- 1 MySQL Replica Database
+- Domain name: www.foobar.com (A Record pointing to Load Balancer)
+
+## How It Works
+
+1. The user enters www.foobar.com in a browser.
+2. DNS resolves `www.foobar.com` (A record) to the Load Balancer’s public IP.
+3. The Load Balancer (HAProxy) receives the request and distributes it using **Round Robin** to the backend servers.
+4. The Web Server (Nginx) handles static content and forwards dynamic requests to the Application Server.
+5. The Application Server processes logic, accesses the MySQL Primary DB, and returns results.
+6. Optionally, a Replica DB can serve read requests or serve as a hot standby.
+
+## Justification for Each Component
+
+- **Load Balancer**: Distributes traffic, prevents overload, and improves uptime.
+- **Web Server (Nginx)**: Handles HTTP(S), serves static files, reverse proxies dynamic requests.
+- **Application Server**: Hosts backend logic and processes user interactions.
+- **Application Files**: The actual code running the website.
+- **Primary DB**: Handles read/write database queries.
+- **Replica DB**: Syncs from Primary and can be used for read-scaling or failover.
+- **DNS A Record**: Maps domain name `www.foobar.com` to the load balancer IP.
+
+## Load Balancer Configuration
+
+- **Algorithm**: Round Robin
+  - Sends each new request to the next server in line.
+  - Ensures fair load distribution and better uptime.
+
+## Active-Active vs Active-Passive
+
+- **Setup**: Active-Passive (single HAProxy)
+- **Difference**:
+  - *Active-Active*: Both load balancers process traffic simultaneously.
+  - *Active-Passive*: One is active; the other takes over if the first fails.
+
+## Database Replication
+
+- **Primary (Master)**:
+  - Handles all write operations.
+  - Sends changes to the replica using binary logs.
+
+- **Replica (Slave)**:
+  - Read-only.
+  - Syncs with the Primary.
+  - Can be promoted to Primary if needed.
+
+## Infrastructure Issues
+
+- **SPOF (Single Point of Failure)**:
+  - Load Balancer is a SPOF without a backup.
+  - Primary DB is a SPOF without automatic failover.
+
+- **Security Concerns**:
+  - No firewall or HTTPS (data in transit is not encrypted).
+  - No intrusion detection.
+
+- **No Monitoring**:
+  - No system like Prometheus or Nagios to detect failures or track metrics.
+
+## Diagram
+
+![Distributed Infrastructure](https://raw.githubusercontent.com/Dama5323/alx-system_engineering-devops/main/0x09-web_infrastructure_design/1-distributed_web_infrastructure.jpg)
+
+
+## Repository
+
+GitHub Repository: https://github.com/Dama5323/alx-system_engineering-devops  
+Directory: `0x09-web_infrastructure_design`  
+File: `1-distributed_web_infrastructure`
+

@@ -1,0 +1,69 @@
+# 2-secured_and_monitored_web_infrastructure
+
+## ✅ Overview
+
+Brief summary of the secured and monitored infrastructure that hosts `www.foobar.com`.  
+Explains secure communication (HTTPS), firewalls, and monitoring.
+
+---
+
+## 🖥️ Infrastructure Components
+
+- Load Balancer (HAProxy with SSL termination)
+- Web + App Server (Nginx + backend code)
+- MySQL Database Server (Primary)
+- 3 Firewalls (One per server)
+- 1 SSL Certificate (HTTPS)
+- 3 Monitoring Clients (e.g., Sumologic agent, Prometheus)
+
+---
+
+## 🔐 Security Components
+
+### 🔸 Firewalls
+
+- **3 Firewalls** deployed on:
+  - Load Balancer
+  - Web/Application Server
+  - Database Server
+- **Purpose**:
+  - Block unwanted traffic
+  - Filter by ports/IPs
+  - Protect internal services
+
+### 🔸 SSL Certificate (HTTPS)
+
+- Deployed at the Load Balancer
+- Ensures encrypted traffic
+- Improves SEO and user trust
+
+---
+
+## 📊 Monitoring
+
+### 🔹 Purpose of Monitoring
+
+- Detect issues early (performance, errors)
+- Analyze QPS (Queries Per Second)
+- Prevent downtime
+
+### 🔹 Tools Used
+
+- Example: **Sumologic**, **Datadog**, or **Prometheus**
+- Installed agents on each server
+
+### 🔹 QPS Monitoring
+
+- Use a monitoring agent that collects metrics
+- For example: Prometheus + MySQL Exporter
+- View data in a central dashboard
+
+---
+
+## 🗺️ Architecture Flow
+
+Describe the flow of requests and internal communication, like:
+
+## 🖼️ Diagram
+
+![Secured Infrastructure](https://raw.githubusercontent.com/Dama5323/alx-system_engineering-devops/main/0x09-web_infrastructure_design/2-secured_and_monitored_web_infrastructure.jpg)
