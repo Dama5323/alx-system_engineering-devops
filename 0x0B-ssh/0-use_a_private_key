@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
-# Connect to my ALX server
-
-ssh -i ~/.ssh/school ubuntu@44.201.115.78
+# This script uses ssh to connect to a server using a private key
+ssh -i ~/.ssh/school ubuntu@13.217.166.72
