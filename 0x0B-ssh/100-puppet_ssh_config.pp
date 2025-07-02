@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
-# Connecting without a password
+# Automating my Tasks using Puppet
 
-file_line { 'Declare identity file':
-  path  => '/root/.ssh/config',
-  line  => '    IdentityFile ~/.ssh/school',
-  match => '^ *IdentityFile',
-}
-
-file_line { 'Turn off passwd auth':
-  path  => '/root/.ssh/config',
-  line  => '    PasswordAuthentication no',
-  match => '^ *PasswordAuthentication',
+file { '/etc/ssh/ssh_config':
+  ensure  => present,
+content => "
+    # SSH client configuration
+    Host *
+      IdentityFile ~/.ssh/school
+      PasswordAuthentication no
+  ",
 }
