@@ -2,4 +2,3 @@
 # Creates an RSA key pair with name 'school' and passphrase 'betty'
 
 ssh-keygen -t rsa -b 4096 -N "betty" -f school
-
