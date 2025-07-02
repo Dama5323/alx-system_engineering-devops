@@ -1,12 +1,14 @@
-#!/usr/bin/env bash
-# Automating my Tasks using Puppet
+# Configure SSH client to use private key and disable password authentication
+file_line { 'Declare identity file':
+  ensure => present,
+  path   => '/etc/ssh/ssh_config',
+  line   => '    IdentityFile ~/.ssh/school',
+  match  => '^    IdentityFile',
+}
 
-file { '/etc/ssh/ssh_config':
-  ensure  => present,
-content => "
-    # SSH client configuration
-    Host *
-      IdentityFile ~/.ssh/school
-      PasswordAuthentication no
-  ",
+file_line { 'Turn off passwd auth':
+  ensure => present,
+  path   => '/etc/ssh/ssh_config',
+  line   => '    PasswordAuthentication no',
+  match  => '^    PasswordAuthentication',
 }
