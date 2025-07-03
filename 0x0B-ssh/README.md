@@ -4,6 +4,7 @@ This project contains Bash scripts for managing SSH connections and configuratio
 
 ## Requirements
 - Private key: `~/.ssh/school`
+- Server : ubuntu 13.217.166.72
 
 ## Setup Instructions
 
