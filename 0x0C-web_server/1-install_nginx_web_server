@@ -1,18 +1,16 @@
 #!/usr/bin/env bash
 # Script to install and configure Nginx web server
 
-# Update package lists
+# Update and install
 sudo apt-get update -y
-
-# Install Nginx
 sudo apt-get install nginx -y
 
-# Create index.html with Hello World!
-echo "Hello World!" | sudo tee /var/www/html/index.html
+# Configure default page
+sudo bash -c 'echo "Hello World!" > /var/www/html/index.html'
 
-# Ensure Nginx is configured to listen on port 80 (default configuration)
-# Restart Nginx without using systemctl
+# Ensure proper permissions
+sudo chmod 644 /var/www/html/index.html
+sudo chown www-data:www-data /var/www/html/index.html
+
+# Restart Nginx
 sudo service nginx restart
-
-# Verify Nginx is running
-sudo service nginx status
