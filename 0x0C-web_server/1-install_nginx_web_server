@@ -1,41 +1,22 @@
 #!/usr/bin/env bash
-<<<<<<< HEAD
-# Commands to install Nginx on Web-Sever-01
+# Configures a new ubuntu machine by installing
+# Nginx where it should be listening on port 80
 
-# Updating Packages before making Installations
-sudo apt-get update
-sudo apt-get -y install nginx
+echo -e "Updating and installing Nginx.\n"
+sudo apt-get update -y -qq && \
+	 sudo apt-get install nginx -y
 
-# Configuring the Uncomplicated Firewall (UFW) to allow incoming traffic for the Nginx HTTP service
+echo -e "\nSetting up some minor stuff.\n"
+
+sudo service nginx start
+
 sudo ufw allow 'Nginx HTTP'
 
-# Creating an index.html page
-echo "Hello World!" | sudo tee /var/www/html/index.html
+sudo chown -R "$USER":"$USER" /var/www/html
+sudo chmod -R 755 /var/www
 
-# Testing Nginx configurations for Syntax errors
-sudo nginx -t
+cp /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bckp
 
-# Restarting Nginx
-sudo service nginx start
-=======
-# Script to install and configure Nginx web server to return 'Hello World!'
+echo -e "Hello World!" | dd status=none of=/var/www/html/index.nginx-debian.html
 
-# Exit immediately if a command exits with a non-zero status
-set -e
-
-# Update package list
-apt-get update -y
-
-# Install nginx
-apt-get install nginx -y
-
-# Ensure nginx is started using service (NOT systemctl)
-service nginx start || true
-
-# Replace default index.html with custom Hello World! page
-echo "Hello World!" > /var/www/html/index.nginx-debian.html
-
-# Optionally make sure it's owned by www-data
-chown www-data:www-data /var/www/html/index.nginx-debian.html
-
->>>>>>> a42f897abe189a8453cac2df8f912cb0cd3c2dbb
+sudo service nginx restart
