@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+<<<<<<< HEAD
 # Commands to install Nginx on Web-Sever-01
 
 # Updating Packages before making Installations
@@ -16,3 +17,25 @@ sudo nginx -t
 
 # Restarting Nginx
 sudo service nginx start
+=======
+# Script to install and configure Nginx web server to return 'Hello World!'
+
+# Exit immediately if a command exits with a non-zero status
+set -e
+
+# Update package list
+apt-get update -y
+
+# Install nginx
+apt-get install nginx -y
+
+# Ensure nginx is started using service (NOT systemctl)
+service nginx start || true
+
+# Replace default index.html with custom Hello World! page
+echo "Hello World!" > /var/www/html/index.nginx-debian.html
+
+# Optionally make sure it's owned by www-data
+chown www-data:www-data /var/www/html/index.nginx-debian.html
+
+>>>>>>> a42f897abe189a8453cac2df8f912cb0cd3c2dbb
