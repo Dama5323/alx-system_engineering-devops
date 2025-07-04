@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Installs Nginx and sets up a custom Hello World page on Ubuntu 16.04 without using systemctl
+
+# Exit on any error
+set -e
+
+# Install nginx if it's not already installed
+apt-get update -y
+apt-get install nginx -y
+
+# Create a custom HTML page with "Hello World!"
+echo "Hello World!" > /var/www/html/index.nginx-debian.html
+
+# Manually start nginx without using systemctl (use service instead)
+service nginx start
