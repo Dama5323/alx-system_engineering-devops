@@ -1,16 +1,21 @@
 #!/usr/bin/env bash
-# Script to install and configure Nginx web server
+# Script to install and configure Nginx web server to return 'Hello World!'
 
-# Update and install
-sudo apt-get update -y
-sudo apt-get install nginx -y
+# Exit immediately if a command exits with a non-zero status
+set -e
 
-# Configure default page
-sudo bash -c 'echo "Hello World!" > /var/www/html/index.html'
+# Update package list
+apt-get update -y
 
-# Ensure proper permissions
-sudo chmod 644 /var/www/html/index.html
-sudo chown www-data:www-data /var/www/html/index.html
+# Install nginx
+apt-get install nginx -y
 
-# Restart Nginx
-sudo service nginx restart
+# Ensure nginx is started using service (NOT systemctl)
+service nginx start || true
+
+# Replace default index.html with custom Hello World! page
+echo "Hello World!" > /var/www/html/index.nginx-debian.html
+
+# Optionally make sure it's owned by www-data
+chown www-data:www-data /var/www/html/index.nginx-debian.html
+
