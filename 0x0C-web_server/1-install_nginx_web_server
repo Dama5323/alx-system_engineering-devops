@@ -1,19 +1,18 @@
 #!/usr/bin/env bash
-# Commands to install Nginx on Web-Sever-01
+# Script to install and configure Nginx web server
 
-# Updating Packages before making Installations
-sudo apt-get update
-sudo apt-get -y install nginx
+# Update package lists
+sudo apt-get update -y
 
-# Configuring the Uncomplicated Firewall (UFW) to allow incoming traffic for the Nginx HTTP service
-sudo ufw allow 'Nginx HTTP'
+# Install Nginx
+sudo apt-get install nginx -y
 
-# Creating an index.html page
+# Create index.html with Hello World!
 echo "Hello World!" | sudo tee /var/www/html/index.html
 
-# Testing Nginx configurations for Syntax errors
-sudo nginx -t
+# Ensure Nginx is configured to listen on port 80 (default configuration)
+# Restart Nginx without using systemctl
+sudo service nginx restart
 
-# Restarting Nginx
-sudo service nginx start
-
+# Verify Nginx is running
+sudo service nginx status
