@@ -1,2 +1,2 @@
 #!/bin/bash
-tr 'water' '01234' <<<"$WATER" | read w && tr 'stir' '0123' <<<"$STIR" | read s && printf "%s\n" "$(tr '012345678' 'bestchol' <<<$((w + s)))" | head -1
+echo $(( $(echo "$WATER" | tr 'waetr' 01234) + $(echo "$STIR" | tr 'triti.' 012345) )) | tr 01234567 bestchol
