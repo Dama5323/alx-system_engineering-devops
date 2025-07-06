@@ -1,22 +1,25 @@
 #!/usr/bin/env bash
-# Configures a new ubuntu machine by installing
-# Nginx where it should be listening on port 80
+# Sets up a web server using nginx, listening on port 80 and serving "Hello World!"
 
-echo -e "Updating and installing Nginx.\n"
-sudo apt-get update -y -qq && \
-	 sudo apt-get install nginx -y
+# Exit script on error
+set -e
 
-echo -e "\nSetting up some minor stuff.\n"
+echo "Updating package list..."
+apt-get update -y -qq
 
-sudo service nginx start
+echo "Installing Nginx..."
+apt-get install nginx -y
 
-sudo ufw allow 'Nginx HTTP'
+echo "Starting Nginx..."
+service nginx start
 
-sudo chown -R "$USER":"$USER" /var/www/html
-sudo chmod -R 755 /var/www
+echo "Allowing HTTP traffic through firewall..."
+ufw allow 'Nginx HTTP' || true
 
-cp /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bckp
+echo "Configuring web page..."
+echo "Hello World!" > /var/www/html/index.html
 
-echo -e "Hello World!" | dd status=none of=/var/www/html/index.nginx-debian.html
+echo "Restarting Nginx..."
+service nginx restart
 
-sudo service nginx restart
+echo "Setup complete."
