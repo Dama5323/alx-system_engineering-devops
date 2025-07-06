@@ -1,23 +1,26 @@
 #!/usr/bin/env bash
-# This script installs and configures Nginx web server on Ubuntu to listen on port 80
-# and return "Hello World!" when querying the root /
+# This script installs and configures Nginx web server on Ubuntu 16.04
+# to listen on port 80 and serve "Hello World!" at the root /
 
-# Update package lists
-apt-get update -y
+# Update package lists (silently)
+apt-get update -qq
 
-# Install Nginx
-apt-get install nginx -y
+# Install Nginx (automatically answering yes)
+apt-get install -y nginx
 
 # Create custom index.html with required content
-echo "Hello World!" > /var/www/html/index.html
+echo "Hello World!" | tee /var/www/html/index.html >/dev/null
 
 # Configure Nginx to listen on port 80
-if ! grep -q "listen 80;" /etc/nginx/sites-enabled/default; then
-    sed -i '/listen \[::\]:80 default_server;/a \ \ \ \ listen 80 default_server;' /etc/nginx/sites-enabled/default
-fi
+sed -i 's/^\(\s*\)listen \[::\]:80 default_server;/\1listen 80 default_server;\n\1listen [::]:80 default_server;/' /etc/nginx/sites-enabled/default
 
-# Ensure Nginx starts on boot
-update-rc.d nginx defaults
+# Ensure proper permissions
+chown -R www-data:www-data /var/www/html/
+chmod -R 755 /var/www/html/
 
 # Restart Nginx without using systemctl
-service nginx restart
+if [ -f /etc/init.d/nginx ]; then
+    /etc/init.d/nginx restart
+else
+    service nginx restart
+fi
