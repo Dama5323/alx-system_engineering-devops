@@ -1,18 +1,22 @@
 #!/usr/bin/env bash
-# Commands to install Nginx on Web-Sever-01
+# Sets up a web server on Ubuntu 16.04 to serve "Hello World!" using Nginx
 
-# Updating Packages before making Installations
-sudo apt-get update
-sudo apt-get -y install nginx
+set -e
 
-# Configuring the Uncomplicated Firewall (UFW) to allow incoming traffic for the Nginx HTTP service
-sudo ufw allow 'Nginx HTTP'
+# Update package list
+apt-get update -y -qq
 
-# Creating an index.html page
-echo "Hello World!" | sudo tee /var/www/html/index.html
+# Install Nginx
+apt-get install -y nginx
 
-# Testing Nginx configurations for Syntax errors
-sudo nginx -t
+# Allow HTTP traffic through UFW (ignore error if ufw not installed or disabled)
+ufw allow 'Nginx HTTP' || true
 
-# Restarting Nginx
-sudo service nginx start
+# Start Nginx without using systemctl
+service nginx start
+
+# Replace default index page with Hello World!
+echo "Hello World!" > /var/www/html/index.html
+
+# Restart Nginx the same way
+service nginx restart
