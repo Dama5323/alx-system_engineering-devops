@@ -1,22 +1,18 @@
 #!/usr/bin/env bash
-# Configures a new ubuntu machine by installing
-# Nginx where it should be listening on port 80
+# Commands to install Nginx on Web-Sever-01
 
-echo -e "Updating and installing Nginx.\n"
-sudo apt-get update -y -qq && \
-	 sudo apt-get install nginx -y
+# Updating Packages before making Installations
+sudo apt-get update
+sudo apt-get -y install nginx
 
-echo -e "\nSetting up some minor stuff.\n"
-
-sudo service nginx start
-
+# Configuring the Uncomplicated Firewall (UFW) to allow incoming traffic for the Nginx HTTP service
 sudo ufw allow 'Nginx HTTP'
 
-sudo chown -R "$USER":"$USER" /var/www/html
-sudo chmod -R 755 /var/www
+# Creating an index.html page
+echo "Hello World!" | sudo tee /var/www/html/index.html
 
-cp /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bckp
+# Testing Nginx configurations for Syntax errors
+sudo nginx -t
 
-echo -e "Hello World!" | dd status=none of=/var/www/html/index.nginx-debian.html
-
-sudo service nginx restart
+# Restarting Nginx
+sudo service nginx start
