@@ -1,12 +1,7 @@
 #!/usr/bin/env bash
-# Sets up a web server with Nginx to serve "Hello World!" from /var/www/html
+# Installs Nginx and configures it to return "Hello World!" at root
 
-# Update and install Nginx silently
 apt-get update -y -qq
 apt-get install -y nginx
-
-# Ensure Nginx is started (no systemctl used)
 service nginx start
-
-# Replace default index.html with "Hello World!"
-echo 'Hello World!' > /var/www/html/index.html
+echo -n 'Hello World!' > /var/www/html/index.html
