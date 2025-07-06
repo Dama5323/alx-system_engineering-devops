@@ -1,7 +1,18 @@
 #!/usr/bin/env bash
-# Installs Nginx and configures it to return "Hello World!" at root
+# Installs and configures Nginx to return "Hello World!" at root
 
+blue='\e[1;34m'
+green='\e[1;32m'
+reset='\033[0m'
+
+echo -e "${blue}Installing Nginx...${reset}"
 apt-get update -y -qq
 apt-get install -y nginx
+
+echo -e "${blue}Starting Nginx...${reset}"
 service nginx start
+
+echo -e "${blue}Creating index page...${reset}"
 echo -n 'Hello World!' > /var/www/html/index.html
+
+echo -e "\n${green}Done!${reset} ✅"
