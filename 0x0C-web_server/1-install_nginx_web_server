@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
-# install nginx and adjust default homepage
-apt-get -y update
-apt-get -y install nginx
-sed -i "21s/^listen .*/listen 80" /etc/nginx/sites-enabled/defult
-ufw allow 'Nginx HTTP'
-echo Holberton School > /var/www/html/index.nginx-debian.html
+# Sets up a web server with Nginx to serve "Hello World!" from /var/www/html
+
+# Update and install Nginx silently
+apt-get update -y -qq
+apt-get install -y nginx
+
+# Ensure Nginx is started (no systemctl used)
 service nginx start
+
+# Replace default index.html with "Hello World!"
+echo 'Hello World!' > /var/www/html/index.html
