@@ -1,9 +1,11 @@
 # Install and configure Nginx with Puppet (includes index.html, 301 redirection, and custom 404 page)
 
+# Ensure Nginx is installed
 package { 'nginx':
   ensure => installed,
 }
 
+# Ensure index.html file exists and is served
 file { '/var/www/html/index.html':
   ensure  => file,
   content => "Hello World!\n",
@@ -11,8 +13,10 @@ file { '/var/www/html/index.html':
   group   => 'www-data',
   mode    => '0644',
   require => Package['nginx'],
+  notify  => Service['nginx'],
 }
 
+# Ensure custom 404 page exists
 file { '/var/www/html/custom_404.html':
   ensure  => file,
   content => "Ceci n'est pas une page\n",
@@ -20,11 +24,13 @@ file { '/var/www/html/custom_404.html':
   group   => 'www-data',
   mode    => '0644',
   require => Package['nginx'],
+  notify  => Service['nginx'],
 }
 
+# Replace the Nginx default config with required directives
 file { '/etc/nginx/sites-available/default':
   ensure  => file,
-  content => @(END),
+  content => @("END"),
     server {
         listen 80 default_server;
         listen [::]:80 default_server;
@@ -43,15 +49,17 @@ file { '/etc/nginx/sites-available/default':
         }
 
         error_page 404 /custom_404.html;
+
         location = /custom_404.html {
             internal;
         }
     }
     | END
-  notify  => Service['nginx'],
   require => Package['nginx'],
+  notify  => Service['nginx'],
 }
 
+# Ensure nginx service is running
 service { 'nginx':
   ensure     => running,
   enable     => true,
