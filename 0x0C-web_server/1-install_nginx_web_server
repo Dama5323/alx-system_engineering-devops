@@ -1,20 +1,19 @@
 #!/usr/bin/env bash
 # Sets up a web server on Ubuntu 16.04 to serve "Hello World!" using Nginx
 
-# Exit if any command fails
 set -e
 
-# Update package lists
+# Update package list
 apt-get update -y
 
 # Install nginx
 apt-get install -y nginx
 
-# Start nginx without systemctl
+# Start nginx using service
 service nginx start
 
-# Set up the default page to return Hello World!
-echo "Hello World!" > /var/www/html/index.html
+# Replace index.html with exact content
+echo 'Hello World!' > /var/www/html/index.html
 
-# Restart nginx using service
+# Restart nginx
 service nginx restart
