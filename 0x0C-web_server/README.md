@@ -44,4 +44,3 @@ This project covers:
 ```bash
 chmod +x 1-install_nginx_web_server
 sudo ./1-install_nginx_web_server
-
