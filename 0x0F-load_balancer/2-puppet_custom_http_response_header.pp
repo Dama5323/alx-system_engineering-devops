@@ -24,3 +24,4 @@ service { 'nginx':
   enable     => true,
   subscribe  => Exec['insert_custom_header'],
 }
+
