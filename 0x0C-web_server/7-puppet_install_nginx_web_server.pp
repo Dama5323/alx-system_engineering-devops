@@ -8,7 +8,7 @@ package { 'nginx':
 # Ensure index.html file exists and is served
 file { '/var/www/html/index.html':
   ensure  => file,
-  content => "Hello World!\n",
+  content => "Hello World!\n",  # Must include newline
   owner   => 'www-data',
   group   => 'www-data',
   mode    => '0644',
@@ -19,7 +19,7 @@ file { '/var/www/html/index.html':
 # Ensure custom 404 page exists
 file { '/var/www/html/custom_404.html':
   ensure  => file,
-  content => "Ceci n'est pas une page\n",
+  content => "Ceci n'est pas une page\n",  # Must include newline
   owner   => 'www-data',
   group   => 'www-data',
   mode    => '0644',
@@ -31,30 +31,30 @@ file { '/var/www/html/custom_404.html':
 file { '/etc/nginx/sites-available/default':
   ensure  => file,
   content => @("END"),
-    server {
-        listen 80 default_server;
-        listen [::]:80 default_server;
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
 
-        root /var/www/html;
-        index index.html index.htm;
+    root /var/www/html;
+    index index.html index.htm;
 
-        server_name _;
+    server_name _;
 
-        location / {
-            try_files \$uri \$uri/ =404;
-        }
-
-        location /redirect_me {
-            return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
-        }
-
-        error_page 404 /custom_404.html;
-
-        location = /custom_404.html {
-            internal;
-        }
+    location / {
+        try_files \$uri \$uri/ =404;
     }
-    | END
+
+    location /redirect_me {
+        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+    }
+
+    error_page 404 /custom_404.html;
+
+    location = /custom_404.html {
+        internal;
+    }
+}
+  | END
   require => Package['nginx'],
   notify  => Service['nginx'],
 }
