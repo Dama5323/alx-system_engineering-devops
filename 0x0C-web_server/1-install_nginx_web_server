@@ -1,50 +1,24 @@
 #!/usr/bin/env bash
-# This script installs and configures Nginx on Ubuntu 16.04 to:
+# This script installs Nginx and configures it to:
 # - Listen on port 80
 # - Return "Hello World!" at root /
+# - Meet all project requirements
 
-# Update package lists quietly
-apt-get update -qq
+# Update package lists
+apt-get update -y
 
-# Install Nginx non-interactively
-DEBIAN_FRONTEND=noninteractive apt-get install -y nginx
+# Install Nginx
+apt-get install nginx -y
 
-# Create the HTML directory if it doesn't exist
-mkdir -p /var/www/html
+# Configure default site to listen on port 80
+sed -i '/listen \[::\]:80 default_server;/a \    listen 80 default_server;' /etc/nginx/sites-available/default
 
-# Set up the index.html with required content
-echo 'Hello World!' > /var/www/html/index.html
+# Create proper index.html with required content
+echo "Hello World!" > /var/www/html/index.html
 
-# Configure Nginx to listen on port 80 properly
-cat > /etc/nginx/sites-available/default <<EOF
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    
-    root /var/www/html;
-    index index.html;
-    
-    server_name 52.23.226.77/;
-    
-    location / {
-        try_files \$uri \$uri/ =404;
-    }
-}
-EOF
+# Ensure proper permissions
+chown -R www-data:www-data /var/www/html/
+chmod -R 755 /var/www/html/
 
-# Set proper permissions
-chown -R www-data:www-data /var/www/html
-chmod -R 755 /var/www/html
-
-# Test the configuration
-nginx -t
-
-# Ensure Nginx starts on boot (without systemctl)
-update-rc.d nginx defaults
-
-# Restart Nginx properly without systemctl
-if [ -f /etc/init.d/nginx ]; then
-    /etc/init.d/nginx restart
-else
-    service nginx restart
-fi
+# Restart Nginx without using systemctl
+service nginx restart
