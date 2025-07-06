@@ -1,24 +1,8 @@
 #!/usr/bin/env bash
-# This script installs Nginx and configures it to:
-# - Listen on port 80
-# - Return "Hello World!" at root /
-# - Meet all project requirements
-
-# Update package lists
-apt-get update -y
-
-# Install Nginx
-apt-get install nginx -y
-
-# Configure default site to listen on port 80
-sed -i '/listen \[::\]:80 default_server;/a \    listen 80 default_server;' /etc/nginx/sites-available/default
-
-# Create proper index.html with required content
-echo "Hello World!" > /var/www/html/index.html
-
-# Ensure proper permissions
-chown -R www-data:www-data /var/www/html/
-chmod -R 755 /var/www/html/
-
-# Restart Nginx without using systemctl
-service nginx restart
+# install nginx and adjust default homepage
+apt-get -y update
+apt-get -y install nginx
+sed -i "21s/^listen .*/listen 80" /etc/nginx/sites-enabled/defult
+ufw allow 'Nginx HTTP'
+echo Holberton School > /var/www/html/index.nginx-debian.html
+service nginx start
