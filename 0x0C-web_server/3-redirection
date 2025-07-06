@@ -1,17 +1,18 @@
 #!/usr/bin/env bash
-# Configures a new Ubuntu machine to perform a 301 redirect from /redirect_me
+# Configures an Ubuntu server to set up Nginx with a 301 redirect at /redirect_me
 
-# Update package lists
-apt-get update -y
-
-# Install nginx
+# Install nginx if it's not installed
+apt-get update
 apt-get install -y nginx
 
-# Configure 301 redirection
-sed -i '/^\s*location \/ {/i \
-    location /redirect_me {\n\
-        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\
-    }\n' /etc/nginx/sites-available/default
+# Ensure nginx is stopped before editing config
+service nginx stop
 
-# Reload nginx (no systemctl)
-service nginx restart
+# Update default nginx config to add redirection
+CONFIG_FILE="/etc/nginx/sites-available/default"
+
+# Use sed to insert the redirection into the server block
+sed -i '/location \/ {/a \ \n\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}' "$CONFIG_FILE"
+
+# Start nginx using service (not systemctl)
+service nginx start
