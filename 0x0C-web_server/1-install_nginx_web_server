@@ -1,7 +1,17 @@
 #!/usr/bin/env bash
-# Installs Nginx and configures it to return "Hello World!" at the root URL
+# This script installs and configures Nginx web server on Ubuntu
 
-apt-get update -y -qq
-apt-get install -y nginx
-service nginx start
-echo -n 'Hello World!' > /var/www/html/index.html
+# Update package lists
+apt-get update -y
+
+# Install Nginx
+apt-get install nginx -y
+
+# Create a custom index.html with "Hello World!" content
+echo "Hello World!" > /var/www/html/index.html
+
+# Ensure Nginx is configured to listen on port 80
+sed -i 's/listen \[::\]:80 default_server;/listen \[::\]:80 default_server;\n\tlisten 80 default_server;/' /etc/nginx/sites-enabled/default
+
+# Restart Nginx without using systemctl
+service nginx restart
