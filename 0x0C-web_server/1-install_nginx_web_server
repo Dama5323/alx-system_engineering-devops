@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Sets up a web server with Nginx to serve "Hello World!" from /var/www/html
+# Installs Nginx and sets up a custom Hello World! page
 
-# Update and install Nginx silently
-apt-get update -y -qq
-apt-get install -y nginx
+# Update package list and install nginx
+apt-get update -y
+apt-get install nginx -y
 
-# Ensure Nginx is started (no systemctl used)
-service nginx start
+# Create a custom index.html with Hello World! content
+echo "Hello World!" > /var/www/html/index.html
 
-# Replace default index.html with "Hello World!"
-echo 'Hello World!' > /var/www/html/index.html
+# Restart Nginx using service command (systemctl not allowed)
+service nginx restart
