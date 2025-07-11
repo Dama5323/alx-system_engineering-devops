@@ -1,21 +1,20 @@
 #!/usr/bin/env bash
-# This script retrieves DNS A record info for subdomains of a given domain
+# Displays information about subdomains.
 
 get_subdomain_info() {
-    local domain=$1
-    local sub=$2
+    local domain="$1"
+    local sub="$2"
     local full="${sub}.${domain}"
 
-    # Use dig and awk to extract A record
-    dig "${full}" | awk -v sub="${sub}" '
-    $1 == sub"."domain"." && $4 == "A" {
+    # Use dig and awk to extract record info
+    dig "${full}" | awk -v sub="$sub" '
+    $1 ~ sub && $4 == "A" {
         printf("The subdomain %s is a %s record and points to %s\n", sub, $4, $5)
-    }
-    ' domain="$domain"
+    }'
 }
 
-domain=$1
-subdomain=$2
+domain="$1"
+subdomain="$2"
 
 if [ -z "$domain" ]; then
     echo "Usage: $0 domain [subdomain]"
