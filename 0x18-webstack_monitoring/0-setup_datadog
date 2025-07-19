@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Installs Datadog agent on web-01 and sets the hostname to XX-web-01
+
+DD_API_KEY="798e6675db0304c9a4a8bef6534d612b"
+
+# Install the Datadog agent using the official script
+bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script.sh)"
+
+# Set a custom hostname
+sudo sed -i '/^# *hostname:/c\hostname: dc-web-01' /etc/datadog-agent/datadog.yaml
+
+# Optional: add tags for clarity
+echo -e "\ntags:\n  - env:alx\n  - name:webserver" | sudo tee -a /etc/datadog-agent/datadog.yaml
+
+# Restart the agent to apply changes
+sudo systemctl restart datadog-agent
